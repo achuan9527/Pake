@@ -22,7 +22,7 @@ console.log('===========================\n');
 cd('node_modules/pake-cli');
 const params = process.env.NAME.split(',').map(name => {
 
-  let _params = `node cli.js ${process.env.URL} --name ${process.env.URL.MODE}${name} --height ${process.env.HEIGHT} --width ${process.env.WIDTH}`;
+  let _params = `node cli.js ${process.env.URL} --name ${process.env.MODE}${name} --height ${process.env.HEIGHT} --width ${process.env.WIDTH}`;
 
   if (process.env.TRANSPARENT === 'true') {
     _params = `${_params} --transparent`;
@@ -65,8 +65,8 @@ const downloadIcon = async iconFile => {
 };
 
 const main = async () => {
+  let iconFile;
   if (process.env.ICON && process.env.ICON !== '') {
-    let iconFile;
     switch (process.platform) {
       case 'linux':
         iconFile = 'icon.png';
