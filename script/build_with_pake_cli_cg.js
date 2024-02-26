@@ -1,7 +1,7 @@
 import shelljs from 'shelljs';
 import axios from 'axios';
 import fs from 'fs';
-
+import {$} from 'zx'
 const { exec, cd, mv } = shelljs;
 
 console.log('Welcome to use pake-cli to build app');
@@ -93,7 +93,7 @@ const main = async () => {
   for (let param of params) {
     param = `${params} --icon ${iconFile}`;
     console.log('Build:', param);
-    exec(param);
+    $`${param.split(' ')}`;
     console.log('Build Success:', param);
   }
 

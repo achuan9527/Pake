@@ -61,7 +61,8 @@
     "psl": "^1.9.0",
     "shelljs": "^0.8.5",
     "tmp-promise": "^3.0.3",
-    "update-notifier": "^7.0.0"
+    "update-notifier": "^7.0.0",
+    "zx": "^7.2.3"
   },
   "devDependencies": {
     "@rollup/plugin-alias": "^5.0.1",
