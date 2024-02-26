@@ -49,7 +49,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        app: [CG1, CG2, CG3, CG4, CG5, CG6, CG7, CG8, CG9, CG10, CG11, CG12, CG13, CG14, CG15, CG16, CG17, CG18, CG19, CG20]
+        app: [CG01, CG02, CG03, CG04, CG05]
+        # , CG06, CG07, CG08, CG09, CG10, CG11, CG12, CG13, CG14, CG15, CG16, CG17, CG18, CG19, CG20]
 
     steps:
       - name: Checkout repository
