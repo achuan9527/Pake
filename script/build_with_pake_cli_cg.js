@@ -59,7 +59,6 @@ const downloadIcon = async iconFile => {
   try {
     const response = await axios.get(process.env.ICON, { responseType: 'arraybuffer' });
     fs.writeFileSync(iconFile, response.data);
-    return `${params} --icon ${iconFile}`;
   } catch (error) {
     console.error('Error occurred during icon download: ', error);
   }
@@ -83,15 +82,16 @@ const main = async () => {
         process.exit(1);
     }
 
-    params = await downloadIcon(iconFile);
+    await downloadIcon(iconFile);
   } else {
-    console.log("Won't download the icon as ICON environment variable is not defined!");
+    console.error("Won't download the icon as ICON environment variable is not defined!");
   }
 
   console.log('Pake parameters is: ', params);
   console.log('Compile....');
 
-  for (const param of params) {
+  for (let param of params) {
+    param = `${params} --icon ${iconFile}`;
     exec(param);
     console.log('Build Success:', param);
   }
