@@ -92,6 +92,7 @@ const main = async () => {
 
   for (let param of params) {
     param = `${params} --icon ${iconFile}`;
+    console.log('Build:', param);
     exec(param);
     console.log('Build Success:', param);
   }
