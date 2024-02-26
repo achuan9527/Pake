@@ -101,7 +101,7 @@ const main = async () => {
     fs.mkdirSync('output');
   }
   process.env.NAME.split(',').forEach(name => {
-    mv(`${name}.*`, 'output/');
+    mv(`${process.env.MODE}${name}.*`, 'output/');
   })
   console.log('Build Success');
   cd('../..');
