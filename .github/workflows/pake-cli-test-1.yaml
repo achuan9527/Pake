@@ -1,4 +1,4 @@
-name: Build App With new Pake CLI
+name: Build App With new Pake CLI test -1
 on:
   workflow_dispatch:
     inputs:
@@ -44,7 +44,12 @@ on:
 
 jobs:
   build:
+    name: ${{ matrix.app }}
     runs-on: ${{ inputs.platform }}
+    strategy:
+      fail-fast: false
+      matrix:
+        app: [CG01, CG02, CG03, CG04, CG05, CG06, CG07, CG08, CG09, CG10, CG11, CG12, CG13, CG14, CG15, CG16, CG17, CG18, CG19, CG20]
 
     steps:
       - name: Checkout repository
@@ -110,8 +115,8 @@ jobs:
         run: |
           node ./script/build_with_pake_cli.js
         env:
-          URL: https://pake-demo.vercel.app/#${{ env.NAME }}
-          NAME: CG01,CG02,CG03,CG04,CG05,CG06,CG07,CG08,CG09,CG10,CG11,CG12,CG13,CG14,CG15,CG16,CG17,CG18,CG19,CG20
+          URL: https://pake-demo.vercel.app/#${{ matrix.app }}
+          NAME: ${{ matrix.app }}
           ICON: ${{ inputs.icon }}
           HEIGHT: ${{ inputs.height }}
           WIDTH: ${{ inputs.width }}
@@ -124,7 +129,7 @@ jobs:
       - name: Upload archive
         uses: actions/upload-artifact@v3
         with:
-          name: output-${{ env.NAME }}.zip
+          name: output-${{ matrix.app }}.zip
           path: node_modules/pake-cli/output/*
           retention-days: 3
 

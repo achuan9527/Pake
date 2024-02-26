@@ -1,4 +1,4 @@
-name: Build App With new Pake CLI
+name: Build Multiple Apps With Pake CLI
 on:
   workflow_dispatch:
     inputs:
@@ -11,6 +11,22 @@ on:
           - 'windows-latest'
           - 'macos-latest'
           - 'ubuntu-20.04'
+      url:
+        description: '[URLs]'
+        required: true
+      name:
+        description: '[Names]'
+        required: true
+      mode:
+        description: '[Mode, Optional]'
+        required: false
+        default: 'test'
+        type: choice
+        options:
+          - 'dev'
+          - 'test'
+          - 'uat'
+          - 'prod'
       icon:
         description: '[Icon, Optional]'
         required: false
@@ -44,7 +60,10 @@ on:
 
 jobs:
   build:
+    name: ${{ inputs.platform }}
     runs-on: ${{ inputs.platform }}
+    strategy:
+      fail-fast: false
 
     steps:
       - name: Checkout repository
@@ -108,10 +127,11 @@ jobs:
 
       - name: Build with pake-cli
         run: |
-          node ./script/build_with_pake_cli.js
+          node ./script/build_with_pake_cli_cg.js
         env:
-          URL: https://pake-demo.vercel.app/#${{ env.NAME }}
-          NAME: CG01,CG02,CG03,CG04,CG05,CG06,CG07,CG08,CG09,CG10,CG11,CG12,CG13,CG14,CG15,CG16,CG17,CG18,CG19,CG20
+          URL: ${{ inputs.url }}
+          NAME: ${{ inputs.name }}
+          MODE: ${{ inputs.mode }}
           ICON: ${{ inputs.icon }}
           HEIGHT: ${{ inputs.height }}
           WIDTH: ${{ inputs.width }}
@@ -124,7 +144,7 @@ jobs:
       - name: Upload archive
         uses: actions/upload-artifact@v3
         with:
-          name: output-${{ env.NAME }}.zip
+          name: output-${{ inputs.platform }}.zip
           path: node_modules/pake-cli/output/*
           retention-days: 3
 
