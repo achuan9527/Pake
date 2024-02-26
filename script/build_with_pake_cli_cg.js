@@ -22,7 +22,7 @@ console.log('===========================\n');
 cd('node_modules/pake-cli');
 const params = process.env.NAME.split(',').map(name => {
 
-  let _params = `node cli.js ${process.env.URL} --name ${process.env.MODE}${name} --height ${process.env.HEIGHT} --width ${process.env.WIDTH}`;
+  let _params = `node cli.js ${process.env.URL}#${name} --name ${process.env.MODE}${name} --height ${process.env.HEIGHT} --width ${process.env.WIDTH}`;
 
   if (process.env.TRANSPARENT === 'true') {
     _params = `${_params} --transparent`;
@@ -54,7 +54,7 @@ const params = process.env.NAME.split(',').map(name => {
   }
   return _params;
 })
-
+console.log('Pake parameters is: ', params);
 const downloadIcon = async iconFile => {
   try {
     const response = await axios.get(process.env.ICON, { responseType: 'arraybuffer' });
@@ -89,12 +89,13 @@ const main = async () => {
 
   console.log('Pake parameters is: ', params);
   console.log('Compile....');
-
-  for (let param of params) {
+  for (let i = 0; i < params.length; i++) {
+    const param = params[i];
     param = `${params} --icon ${iconFile}`;
-    console.log('Build:', param);
+    console.log('Build:', param, );
     await $`${param.split(' ')}`;
     console.log('Build Success:', param);
+    
   }
 
   if (!fs.existsSync('output')) {
