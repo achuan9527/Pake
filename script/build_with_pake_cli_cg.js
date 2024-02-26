@@ -90,8 +90,7 @@ const main = async () => {
   console.log('Pake parameters is: ', params);
   console.log('Compile....');
   for (let i = 0; i < params.length; i++) {
-    const param = params[i];
-    param = `${params} --icon ${iconFile}`;
+    const param = `${params[i]} --icon ${iconFile}`;
     console.log('Build:', param, );
     await $`${param.split(' ')}`;
     console.log('Build Success:', param);
