@@ -22,7 +22,7 @@ console.log('===========================\n');
 cd('node_modules/pake-cli');
 const params = process.env.NAME.split(',').map(name => {
 
-  let _params = `node cli.js ${process.env.URL} --name ${MODE}${name} --height ${process.env.HEIGHT} --width ${process.env.WIDTH}`;
+  let _params = `node cli.js ${process.env.URL}#game_code=${name}&debug=true --name ${MODE}${name} --height ${process.env.HEIGHT} --width ${process.env.WIDTH}`;
 
   if (process.env.TRANSPARENT === 'true') {
     _params = `${_params} --transparent`;
