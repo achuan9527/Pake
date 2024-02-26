@@ -20,40 +20,36 @@ console.log('targets type? only for Linux: ', process.env.TARGETS);
 console.log('===========================\n');
 
 cd('node_modules/pake-cli');
-const params = process.env.NAME.split(',').map(name => {
+let params = `node cli.js ${process.env.URL} --name ${process.env.NAME} --height ${process.env.HEIGHT} --width ${process.env.WIDTH}`;
 
-  let _params = `node cli.js ${process.env.URL}#game_code=${name}&debug=true --name ${MODE}${name} --height ${process.env.HEIGHT} --width ${process.env.WIDTH}`;
+if (process.env.TRANSPARENT === 'true') {
+  params = `${params} --transparent`;
+}
 
-  if (process.env.TRANSPARENT === 'true') {
-    _params = `${_params} --transparent`;
-  }
+if (process.env.FULLSCREEN === 'true') {
+  params = `${params} --resize`;
+}
 
-  if (process.env.FULLSCREEN === 'true') {
-    _params = `${_params} --resize`;
-  }
+if (process.env.MULTI_ARCH === 'true') {
+  exec('rustup target add aarch64-apple-darwin');
+  params = `${params} --multi-arch`;
+}
 
-  if (process.env.MULTI_ARCH === 'true') {
-    exec('rustup target add aarch64-apple-darwin');
-    _params = `${_params} --multi-arch`;
-  }
+if (process.env.TARGETS) {
+  params = `${params} --targets ${process.env.TARGETS}`;
+}
 
-  if (process.env.TARGETS) {
-    _params = `${_params} --targets ${process.env.TARGETS}`;
-  }
+if (process.platform === 'win32') {
+  params = `${params} --show-system-tray`;
+}
 
-  if (process.platform === 'win32') {
-    _params = `${_params} --show-system-tray`;
-  }
+if (process.platform === 'linux') {
+  params = `${params} --show-system-tray`;
+}
 
-  if (process.platform === 'linux') {
-    _params = `${_params} --show-system-tray`;
-  }
-
-  if (process.platform === 'darwin') {
-    _params = `${_params} --show-menu`;
-  }
-  return _params;
-})
+if (process.platform === 'darwin') {
+  params = `${params} --show-menu`;
+}
 
 const downloadIcon = async iconFile => {
   try {
@@ -79,7 +75,7 @@ const main = async () => {
         iconFile = 'icon.ico';
         break;
       default:
-        console.error("Unable to detect your OS system, won't download the icon!");
+        console.log("Unable to detect your OS system, won't download the icon!");
         process.exit(1);
     }
 
@@ -90,18 +86,12 @@ const main = async () => {
 
   console.log('Pake parameters is: ', params);
   console.log('Compile....');
-
-  for (const param of params) {
-    exec(param);
-    console.log('Build Success:', param);
-  }
+  exec(params);
 
   if (!fs.existsSync('output')) {
     fs.mkdirSync('output');
   }
-  process.env.NAME.split(',').forEach(name => {
-    mv(`${MODE}${name}.*`, 'output/');
-  })
+  mv(`${process.env.NAME}.*`, 'output/');
   console.log('Build Success');
   cd('../..');
 };
